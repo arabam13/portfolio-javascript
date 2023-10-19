@@ -1,5 +1,5 @@
 const filterBar = document.querySelector('.filterBar');
-const allItemsOfFilterBar = document.querySelectorAll('.filterBar li');
+const allItemsOfFilterBar = document.querySelectorAll('.filterBar button');
 const gallery = document.querySelector('.gallery');
 
 // Fonction d'ajout d'elements dans le DOM
@@ -30,62 +30,51 @@ function deleteClassActiveAndAddClassActive(filterItem) {
 
 //récup des projets par categ
 const getWorksByCategory = (works, categoryId) => {
-  const figures = document.querySelectorAll('figure');
+  const figures = document.querySelectorAll('.gallery figure');
   figures.forEach((figure) => {
     figure.remove();
   });
-  if (categoryId === null) {
+  if (categoryId === 'tous') {
     return works.forEach((work) => {
       addElement(work.imageUrl, work.title);
     });
   }
-  const worksFiltered = works.filter((work) => work.category.id === categoryId);
+  const worksFiltered = works.filter(
+    (work) => work.category.id === parseInt(categoryId)
+  );
   return worksFiltered.forEach((work) => {
     addElement(work.imageUrl, work.title);
   });
 };
 
+//Ajout d'un écouteur d'événement sur les items de la filterBar
+function addEventListenerToItems(works, filterItem) {
+  const element = document.querySelector(`.${filterItem}`);
+  element.addEventListener('click', (e) => {
+    deleteClassActiveAndAddClassActive(filterItem);
+    return getWorksByCategory(works, e.target.getAttribute('data-id'));
+  });
+}
+
 // récupération des données de l'API et affichage des projets selon la catégorie
 const getWorks = async () => {
-  const works = await fetch('http://localhost:5678/api/works').then((res) =>
-    res.json()
-  );
+  const res = await fetch('http://localhost:5678/api/works');
+  const works = await res.json();
   works.forEach((work) => {
     addElement(work.imageUrl, work.title);
   });
   deleteClassActiveAndAddClassActive('tous');
 
-  //filterItem: tous
-  const tous = document.querySelector('.tous');
-  tous.addEventListener('click', () => {
-    deleteClassActiveAndAddClassActive('tous');
-    return getWorksByCategory(works, null);
-  });
-
-  //filterItem: categorie objets
-  const objets = document.querySelector('.objets');
-  objets.addEventListener('click', () => {
-    deleteClassActiveAndAddClassActive('objets');
-    return getWorksByCategory(works, 1);
-  });
-
-  //filterItem: categorie appartements
-  const appartements = document.querySelector('.appartements');
-  appartements.addEventListener('click', () => {
-    deleteClassActiveAndAddClassActive('appartements');
-    return getWorksByCategory(works, 2);
-  });
-  //filterItem: categorie hotels & restaurants
-  const hotels = document.querySelector('.hotels');
-  hotels.addEventListener('click', () => {
-    deleteClassActiveAndAddClassActive('hotels');
-    return getWorksByCategory(works, 3);
-  });
+  //Appele de la fonction addEventListenerToItems pour chaque item de la filterBar
+  addEventListenerToItems(works, 'tous');
+  addEventListenerToItems(works, 'objets');
+  addEventListenerToItems(works, 'appartements');
+  addEventListenerToItems(works, 'hotels');
 };
 
 // Fonction Principale
 function main() {
-  getWorks();
+  getWorks().then();
 }
 
 main();

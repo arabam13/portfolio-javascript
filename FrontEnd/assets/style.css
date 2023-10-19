@@ -272,18 +272,20 @@ footer nav ul {
   color: #1d6154;
 }
 
-.filterBar li {
+.filterBar button {
   padding: 10px 20px;
   border: 1px solid #1d6154;
+  color: #1d6154;
+  background-color: white;
   border-radius: 15px;
   font-size: 1.4em;
   cursor: pointer;
 }
-.filterBar li:hover {
+.filterBar button:hover {
   background-color: #1d6154;
   color: white;
 }
-.filterBar li.active {
+.filterBar button.active {
   background-color: #1d6154;
   color: white;
 }
