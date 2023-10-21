@@ -20,7 +20,7 @@
         <ul>
           <li><a href="index.html#gallery">projets</a></li>
           <li><a href="index.html#contact">contact</a></li>
-          <li><a href="./login.html">login</a></li>
+          <li><a href="#">login</a></li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>
@@ -28,16 +28,17 @@
     <main>
       <div class="form-container">
         <h2>Login</h2>
-        <form action="" class="form">
+        <form action="" method="" class="form">
+          <div class="error"></div>
           <div class="form-input">
             <label for="email">E-mail</label>
-            <input type="text" id="email" name="email" />
+            <input type="text" id="email" name="email" value="""/>
           </div>
           <div class="form-input">
             <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" value="" />
           </div>
-          <input type="submit" value="se connecter" />
+          <button type="button" disabled>se connecter</button>
           <a href="#">Mot de passe oublié</a>
         </form>
       </div>
@@ -50,6 +51,6 @@
         </ul>
       </nav>
     </footer>
-    <script src="./app.js" defer></script>
+    <script src="./login.js" defer></script>
   </body>
 </html>

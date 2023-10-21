@@ -301,7 +301,7 @@ li a:hover {
 
 .form-container {
   margin-top: 150px;
-  margin-bottom: 360px;
+  margin-bottom: 310px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -314,11 +314,6 @@ li a:hover {
   justify-content: center;
   align-items: center;
   gap: 30px;
-}
-
-.form input[type='submit'] {
-  padding: 10px 20px;
-  margin: 0;
 }
 
 .form .form-input {
@@ -340,7 +335,27 @@ li a:hover {
 .form .form-input input:focus {
   outline: black;
 }
+.form button {
+  padding: 10px 20px;
+  margin: 0;
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.form button:focus {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
 
 .form a {
   color: black;
+}
+
+.error {
+  color: red;
+  font-size: 16px;
 }

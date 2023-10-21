@@ -12,20 +12,20 @@ function addElement(imageUrl, title) {
   img.alt = title;
   figcaption.textContent = title;
 
-  figure.appendChild(img);
-  figure.appendChild(figcaption);
-  gallery.appendChild(figure);
+  figure?.appendChild(img);
+  figure?.appendChild(figcaption);
+  gallery?.appendChild(figure);
 }
 
 //Fonction d'ajout de la classe active sur l'element cliqué
 function deleteClassActiveAndAddClassActive(filterItem) {
   // suppression de la classe active sur tous les items de la filterBar
   allItemsOfFilterBar.forEach((item) => {
-    item.classList.remove('active');
+    item?.classList.remove('active');
   });
   //ajout de la classe active sur l'element cliqué
   const element = document.querySelector(`.${filterItem}`);
-  element.classList.add('active');
+  element?.classList.add('active');
 }
 
 //récup des projets par categ
@@ -50,7 +50,7 @@ const getWorksByCategory = (works, categoryId) => {
 //Ajout d'un écouteur d'événement sur les items de la filterBar
 function addEventListenerToItems(works, filterItem) {
   const element = document.querySelector(`.${filterItem}`);
-  element.addEventListener('click', (e) => {
+  element?.addEventListener('click', (e) => {
     deleteClassActiveAndAddClassActive(filterItem);
     return getWorksByCategory(works, e.target.getAttribute('data-id'));
   });
