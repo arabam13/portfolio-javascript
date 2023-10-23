@@ -326,15 +326,11 @@ li a:hover {
 .form .form-input input {
   width: 339px;
   padding: 18px 20px;
-  background: #fff;
   box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
   border: none;
   font-size: 16px;
 }
 
-.form .form-input input:focus {
-  outline: black;
-}
 .form button {
   padding: 10px 20px;
   margin: 0;
