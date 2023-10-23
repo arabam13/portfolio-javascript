@@ -1,5 +1,5 @@
 if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
-  window.location.replace('http://localhost:5500/FrontEnd/index.html');
+  window.location.assign('./index.html');
 } else {
   const button = document.querySelector('form button');
   const error = document.querySelector('.error');
@@ -55,8 +55,7 @@ if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
       const responseJson = await response.json();
       error.textContent = '';
       localStorage.setItem('token', responseJson.token);
-      return (window.location.href =
-        'http://localhost:5500/FrontEnd/index.html');
+      return window.location.assign('./index.html');
     };
 
     login().then();

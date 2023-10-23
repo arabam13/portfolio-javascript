@@ -359,3 +359,28 @@ li a:hover {
   color: red;
   font-size: 16px;
 }
+
+.gallery-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  gap: 20px;
+}
+.modeEdition {
+  display: none;
+}
+.modeEdition.logged {
+  display: flex;
+}
+.modeEdition.logged .modeEdition-text {
+  align-self: center;
+}
+
+#portfolio h2 {
+  margin: 0;
+}
+
+.logout {
+  display: none;
+}

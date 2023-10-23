@@ -1,7 +1,6 @@
 const filterBar = document.querySelector('.filterBar');
 const allItemsOfFilterBar = document.querySelectorAll('.filterBar button');
 const gallery = document.querySelector('.gallery');
-
 // Fonction d'ajout d'elements dans le DOM
 function addElement(imageUrl, title) {
   const figure = document.createElement('figure');
@@ -75,6 +74,41 @@ const getWorks = async () => {
 // Fonction Principale
 function main() {
   getWorks().then();
+  let token = null;
+  let isTokenModified = false;
+
+  //Ajout d'un EventListener sur l'element logout
+  const logout = document.querySelector('.logout');
+  logout?.addEventListener('click', (e) => {
+    localStorage.removeItem('token');
+    document.querySelector('.login').style.display = 'block';
+    document.querySelector('.logout').style.display = 'none';
+    document.querySelector('.modeEdition').style.display = 'none';
+  });
+
+  //Ajout d'un EventListener sur le DOM au chargement de la page
+  window.addEventListener('DOMContentLoaded', () => {
+    token = localStorage.getItem('token');
+    if (token && token !== null && !isTokenModified) {
+      document.querySelector('.login').style.display = 'none';
+      document.querySelector('.logout').style.display = 'block';
+      document.querySelector('.modeEdition').style.display = 'flex';
+      document.querySelector('.modeEdition').classList.add('logged');
+    }
+  });
+
+  //Ajout d'un eventListener sur le storage pour detecter les changements et supprimer le token si modification
+  window.addEventListener('storage', () => {
+    // console.log('storage changed');
+    isTokenModified = token === localStorage.getItem('token') ? false : true;
+
+    if (localStorage.getItem('token') === null || isTokenModified) {
+      document.querySelector('.login').style.display = 'block';
+      document.querySelector('.logout').style.display = 'none';
+      document.querySelector('.modeEdition').style.display = 'none';
+      localStorage.removeItem('token');
+    }
+  });
 }
 
 main();
