@@ -363,11 +363,23 @@ li a:hover {
   margin-bottom: 50px;
   gap: 20px;
 }
+.sectionEdition {
+  display: none;
+  justify-content: center;
+  background-color: black;
+  margin: 0;
+  padding: 20px 0;
+}
+.sectionEdition a {
+  color: white;
+  text-decoration: none;
+}
 .modeEdition {
   display: none;
 }
 .modeEdition.logged {
   display: flex;
+  gap: 5px;
 }
 .modeEdition.logged .modeEdition-text {
   align-self: center;
@@ -375,6 +387,11 @@ li a:hover {
 
 #portfolio h2 {
   margin: 0;
+}
+
+.gallery-header a {
+  text-decoration: none;
+  color: black;
 }
 
 .logout {
