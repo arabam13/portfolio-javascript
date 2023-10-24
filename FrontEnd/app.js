@@ -77,19 +77,6 @@ function main() {
   let token = null;
   let isTokenModified = false;
 
-  //Ajout d'un EventListener sur l'element logout
-  const logout = document.querySelector('.logout');
-  logout?.addEventListener('click', (e) => {
-    localStorage.removeItem('token');
-    document.querySelector('.login').style.display = 'block';
-    document.querySelector('.logout').style.display = 'none';
-    document.querySelector('.sectionEdition').style.display = 'none';
-    document.querySelectorAll('.modeEdition').forEach((item) => {
-      item.display = 'none';
-      item.classList.remove('logged');
-    });
-  });
-
   //Ajout d'un EventListener sur le DOM au chargement de la page
   window.addEventListener('DOMContentLoaded', () => {
     token = localStorage.getItem('token');
@@ -119,6 +106,19 @@ function main() {
       });
       localStorage.removeItem('token');
     }
+  });
+
+  //Ajout d'un EventListener sur l'element logout
+  const logout = document.querySelector('.logout');
+  logout?.addEventListener('click', (e) => {
+    localStorage.removeItem('token');
+    document.querySelector('.login').style.display = 'block';
+    document.querySelector('.logout').style.display = 'none';
+    document.querySelector('.sectionEdition').style.display = 'none';
+    document.querySelectorAll('.modeEdition').forEach((item) => {
+      item.display = 'none';
+      item.classList.remove('logged');
+    });
   });
 }
 

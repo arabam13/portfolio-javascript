@@ -6,7 +6,7 @@ if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
 
   //Fonction d'ajout d'event listener sur les entrées pour controler le bouton
   setControlButton = (target, email, password) => {
-    return target.addEventListener('input', (e) => {
+    const customizeButton = (e) => {
       if (email.value !== '' && password.value !== '') {
         button.removeAttribute('disabled');
         button.style.backgroundColor = '#1d6154';
@@ -16,7 +16,8 @@ if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
         button.style.backgroundColor = '#b2b2b2';
         button.style.cursor = 'not-allowed';
       }
-    });
+    };
+    target.addEventListener('input', customizeButton);
   };
 
   const email = document.getElementById('email');
