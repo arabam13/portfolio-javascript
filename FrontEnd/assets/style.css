@@ -397,3 +397,97 @@ li a:hover {
 .logout {
   display: none;
 }
+
+/* ***** modal ***** */
+.modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(134, 134, 134, 0.3);
+  animation: fadeIn 0.3s both;
+}
+
+.modal-wrapper {
+  overflow: auto;
+  width: 600px;
+  height: 500px;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 20px);
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  animation: slideFromTop 0.3s both;
+}
+
+.modal-wrapper #titlemodal {
+  font-size: 18px;
+  color: black;
+  padding: 20px 0;
+}
+.modal-wrapper .modal-gallery {
+  flex: 60%;
+}
+.modal-wrapper figure img {
+  width: 78px;
+  height: 105px;
+  object-fit: cover;
+}
+
+.modal-wrapper .modal-gallery button {
+  flex: 10%;
+}
+
+.modal[aria-hidden='true'] {
+  animation-name: fadeOut;
+  /* animation-direction: reverse; */
+}
+
+.modal[aria-hidden='true'] .modal-wrapper {
+  animation-name: slideToBottom;
+  /* animation-direction: reverse; */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideFromTop {
+  from {
+    transform: translateY(-50px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideToBottom {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(50px);
+  }
+}

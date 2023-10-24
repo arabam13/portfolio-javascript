@@ -120,6 +120,8 @@ function main() {
       item.classList.remove('logged');
     });
   });
+
+  //traitement de la modal qui affiche la liste des projets
 }
 
 main();
