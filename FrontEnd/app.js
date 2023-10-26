@@ -51,7 +51,7 @@ function addEventListenerToItems(works, filterItem) {
   const element = document.querySelector(`.${filterItem}`);
   element?.addEventListener('click', (e) => {
     deleteClassActiveAndAddClassActive(filterItem);
-    return getWorksByCategory(works, e.target.getAttribute('data-id'));
+    getWorksByCategory(works, e.target.getAttribute('data-id'));
   });
 }
 
@@ -65,10 +65,17 @@ const getWorks = async () => {
   deleteClassActiveAndAddClassActive('tous');
 
   //Appele de la fonction addEventListenerToItems pour chaque item de la filterBar
-  addEventListenerToItems(works, 'tous');
-  addEventListenerToItems(works, 'objets');
-  addEventListenerToItems(works, 'appartements');
-  addEventListenerToItems(works, 'hotels');
+  const allButtonsFilterBar = document.querySelectorAll('.filterBar button');
+  Array.from(allButtonsFilterBar).forEach((button) => {
+    button?.addEventListener('click', (e) => {
+      deleteClassActiveAndAddClassActive(button.className);
+      getWorksByCategory(works, e.target.getAttribute('data-id'));
+    });
+  });
+  // addEventListenerToItems(works, 'tous');
+  // addEventListenerToItems(works, 'objets');
+  // addEventListenerToItems(works, 'appartements');
+  // addEventListenerToItems(works, 'hotels');
 };
 
 // Fonction Principale

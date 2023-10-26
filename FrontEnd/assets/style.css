@@ -460,6 +460,9 @@ li a:hover {
   right: 5px;
   background: black;
   color: white;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
 }
 
 .modal-wrapper button {

@@ -3,32 +3,50 @@ let modal = null;
 let focusables = [];
 let previouslyFocusedElement = null;
 
+const deleteFigureFromApi = async function (id) {
+  try {
+    // debugger;
+    console.log(window.location);
+    await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    });
+    // const works = await fetch(`http://localhost:5678/api/works`);
+    // const worksJson = await works.json();
+    // console.log(worksJson);
+  } catch (e) {
+    console.log(e);
+  }
+};
 function addElementToModal(modalGallery, id, imageUrl, title) {
   const figure = document.createElement('figure');
   figure.style.position = 'relative';
   const img = document.createElement('img');
-  const buttonGarbage = document.createElement('span');
+  const buttonGarbage = document.createElement('button');
   buttonGarbage.classList.add('material-symbols-outlined');
   buttonGarbage.classList.add('garbage');
+  buttonGarbage.classList.add('data-id');
+  buttonGarbage.setAttribute('data-id', id);
+
   buttonGarbage.textContent = 'delete';
   buttonGarbage.style.cursor = 'pointer';
   // Rajout d'un EventListener sur le bouton supprimer
   buttonGarbage.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (globalThis.confirm('Voulez vous supprimer ce projet ?')) {
-      try {
-        e.preventDefault();
-        const res = await fetch(`http://localhost:5678/api/works/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('token'),
-          },
-        });
-      } catch (e) {
-        console.error(e);
-      }
+    const id = e.target.getAttribute('data-id');
+
+    if (window.confirm('Voulez vous supprimer ce projet ?')) {
+      // console.log(e.target.parentNode);
+      await deleteFigureFromApi(id);
+      e.target.parentNode.remove();
     }
+
+    // console.log(e.target);
+    // window.onbeforeunload = (e) => e.preventDefault();
   });
 
   img.src = imageUrl;
