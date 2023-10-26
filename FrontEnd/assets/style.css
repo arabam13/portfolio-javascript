@@ -415,7 +415,7 @@ li a:hover {
 .modal-wrapper {
   overflow: auto;
   width: 600px;
-  height: 500px;
+  height: 570px;
   max-width: calc(100vw - 20px);
   max-height: calc(100vh - 20px);
   padding: 20px;
@@ -424,8 +424,9 @@ li a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
   animation: slideFromTop 0.3s both;
+  position: raltive;
 }
 
 .modal-wrapper #titlemodal {
@@ -433,8 +434,19 @@ li a:hover {
   color: black;
   padding: 20px 0;
 }
+.modal-wrapper .crossButton {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+}
 .modal-wrapper .modal-gallery {
-  flex: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px 85px;
 }
 .modal-wrapper figure img {
   width: 78px;
@@ -442,8 +454,23 @@ li a:hover {
   object-fit: cover;
 }
 
-.modal-wrapper .modal-gallery button {
-  flex: 10%;
+.modal-wrapper .modal-gallery .garbage {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: black;
+  color: white;
+}
+
+.modal-wrapper button {
+  padding: 10px 40px;
+  border: 1px solid #1d6154;
+  background-color: #1d6154;
+  color: white;
+  border-radius: 15px;
+  font-size: 1.4em;
+  cursor: pointer;
+  margin: 20px 0;
 }
 
 .modal[aria-hidden='true'] {

@@ -3,11 +3,61 @@ let modal = null;
 let focusables = [];
 let previouslyFocusedElement = null;
 
+function addElementToModal(modalGallery, id, imageUrl, title) {
+  const figure = document.createElement('figure');
+  figure.style.position = 'relative';
+  const img = document.createElement('img');
+  const buttonGarbage = document.createElement('span');
+  buttonGarbage.classList.add('material-symbols-outlined');
+  buttonGarbage.classList.add('garbage');
+  buttonGarbage.textContent = 'delete';
+  buttonGarbage.style.cursor = 'pointer';
+  // Rajout d'un EventListener sur le bouton supprimer
+  buttonGarbage.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (globalThis.confirm('Voulez vous supprimer ce projet ?')) {
+      try {
+        e.preventDefault();
+        const res = await fetch(`http://localhost:5678/api/works/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('token'),
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  });
+
+  img.src = imageUrl;
+  img.alt = title;
+
+  figure?.appendChild(img);
+  figure?.appendChild(buttonGarbage);
+  modalGallery?.appendChild(figure);
+}
+
 const openModal = async function (e) {
   e.preventDefault();
+  //chargement de la modale
   const target = this.getAttribute('href');
   modal = await loadModal(target);
+  // récup des projets via api
+  const res = await fetch('http://localhost:5678/api/works');
+  const works = await res.json();
+  // Suppression puis chargement des projets au demarage de la modale
+  const figures = document.querySelectorAll('.modal-gallery figure');
+  figures.forEach((figure) => {
+    figure.remove();
+  });
+  const modalGallery = document.querySelector('.modal-gallery');
+  works.map((work) =>
+    addElementToModal(modalGallery, work.id, work.imageUrl, work.title)
+  );
 
+  //gestion de l'element selectionné via le curseur
   focusables = Array.from(modal.querySelectorAll(focusableSelector));
   previouslyFocusedElement = document.querySelector(':focus');
   modal.style.display = 'flex';
@@ -15,6 +65,8 @@ const openModal = async function (e) {
   modal.removeAttribute('aria-hidden');
   modal.setAttribute('aria-modal', 'true');
   modal.addEventListener('click', closeModal);
+  const crossbutton = document.querySelector('.crossButton');
+  crossbutton.addEventListener('click', closeModal);
   modal
     .querySelector('.js-modal-stop')
     .addEventListener('click', stopPropagation);
@@ -27,6 +79,8 @@ const closeModal = function (e) {
   modal.setAttribute('aria-hidden', 'true');
   modal.removeAttribute('aria-modal');
   modal.removeEventListener('click', closeModal);
+  const crossbutton = document.querySelector('.crossButton');
+  crossbutton.removeEventListener('click', closeModal);
   modal
     .querySelector('.js-modal-stop')
     .removeEventListener('click', stopPropagation);
@@ -76,7 +130,7 @@ const loadModal = async function (url) {
 };
 
 document.querySelectorAll('.js-modal').forEach((a) => {
-  a.addEventListener('click', openModal, a);
+  a.addEventListener('click', openModal);
 });
 
 window.addEventListener('keydown', function (e) {

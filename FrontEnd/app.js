@@ -73,9 +73,12 @@ const getWorks = async () => {
 
 // Fonction Principale
 function main() {
-  getWorks().then();
   let token = null;
   let isTokenModified = false;
+
+  if (token === null) {
+    getWorks().then();
+  }
 
   //Ajout d'un EventListener sur le DOM au chargement de la page
   window.addEventListener('DOMContentLoaded', () => {
@@ -88,6 +91,7 @@ function main() {
         item.display = 'flex';
         item.classList.add('logged');
       });
+      document.querySelector('.filterBar').style.display = 'none';
     }
   });
 
@@ -105,6 +109,7 @@ function main() {
         item.classList.remove('logged');
       });
       localStorage.removeItem('token');
+      document.querySelector('.filterBar').style.display = 'flex';
     }
   });
 
@@ -119,9 +124,8 @@ function main() {
       item.display = 'none';
       item.classList.remove('logged');
     });
+    document.querySelector('.filterBar').style.display = 'flex';
   });
-
-  //traitement de la modal qui affiche la liste des projets
 }
 
 main();
