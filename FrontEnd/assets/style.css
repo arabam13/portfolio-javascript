@@ -454,7 +454,7 @@ li a:hover {
   object-fit: cover;
 }
 
-.modal-wrapper .modal-gallery .garbage {
+.modal-wrapper .modal-gallery .trash {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -465,7 +465,7 @@ li a:hover {
   border-radius: 0;
 }
 
-.modal-wrapper button {
+.modal-wrapper .buttonAddWork {
   padding: 10px 40px;
   border: 1px solid #1d6154;
   background-color: #1d6154;
@@ -474,6 +474,10 @@ li a:hover {
   font-size: 1.4em;
   cursor: pointer;
   margin: 20px 0;
+}
+.modal-wrapper .buttonAddWork:focus {
+  outline: none;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .modal[aria-hidden='true'] {

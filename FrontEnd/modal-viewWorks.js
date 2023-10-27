@@ -1,59 +1,54 @@
-const focusableSelector = 'figure, button';
+const focusableSelector = 'button';
 let modal = null;
 let focusables = [];
 let previouslyFocusedElement = null;
 
 const deleteFigureFromApi = async function (id) {
-  try {
-    // debugger;
-    console.log(window.location);
-    await fetch(`http://localhost:5678/api/works/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token'),
-      },
-    });
-    // const works = await fetch(`http://localhost:5678/api/works`);
-    // const worksJson = await works.json();
-    // console.log(worksJson);
-  } catch (e) {
-    console.log(e);
+  debugger;
+  await fetch(`http://localhost:5678/api/works/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    },
+  });
+  // const responseJson = await response.json();
+  // console.log(responseJson);
+};
+const addEventListnerToButtonTrash = async (e) => {
+  e.preventDefault();
+  const id = e.target.parentNode.getAttribute('data-id');
+  const confirmation = confirm('Voulez vous supprimer ce projet ?');
+  if (confirmation) {
+    await deleteFigureFromApi(id);
+    console.log('figure modal', e.target.closest('figure'));
+    e.target.parentNode.remove();
+    console.log(
+      'figure gallery',
+      document.querySelector(`.gallery figure[data-id="${id}"]`)
+    );
+    document.querySelector(`.gallery figure[data-id="${id}"]`).remove();
   }
 };
 function addElementToModal(modalGallery, id, imageUrl, title) {
   const figure = document.createElement('figure');
   figure.style.position = 'relative';
+  figure.setAttribute('data-id', id);
   const img = document.createElement('img');
-  const buttonGarbage = document.createElement('button');
-  buttonGarbage.classList.add('material-symbols-outlined');
-  buttonGarbage.classList.add('garbage');
-  buttonGarbage.classList.add('data-id');
-  buttonGarbage.setAttribute('data-id', id);
-
-  buttonGarbage.textContent = 'delete';
-  buttonGarbage.style.cursor = 'pointer';
-  // Rajout d'un EventListener sur le bouton supprimer
-  buttonGarbage.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const id = e.target.getAttribute('data-id');
-
-    if (window.confirm('Voulez vous supprimer ce projet ?')) {
-      // console.log(e.target.parentNode);
-      await deleteFigureFromApi(id);
-      e.target.parentNode.remove();
-    }
-
-    // console.log(e.target);
-    // window.onbeforeunload = (e) => e.preventDefault();
-  });
+  const buttonTrash = document.createElement('button');
+  buttonTrash.classList.add('material-symbols-outlined');
+  buttonTrash.classList.add('trash');
+  // buttonTrash.classList.add('data-id');
+  // buttonTrash.setAttribute('data-id', id);
+  buttonTrash.setAttribute('type', 'button');
+  buttonTrash.textContent = 'delete';
+  buttonTrash.style.cursor = 'pointer';
 
   img.src = imageUrl;
   img.alt = title;
 
   figure?.appendChild(img);
-  figure?.appendChild(buttonGarbage);
+  figure?.appendChild(buttonTrash);
   modalGallery?.appendChild(figure);
 }
 
@@ -61,16 +56,17 @@ const openModal = async function (e) {
   e.preventDefault();
   //chargement de la modale
   const target = this.getAttribute('href');
-  modal = await loadModal(target);
+  modal = document.getElementById(target.split('#')[1]);
+
   // récup des projets via api
   const res = await fetch('http://localhost:5678/api/works');
   const works = await res.json();
-  // Suppression puis chargement des projets au demarage de la modale
-  const figures = document.querySelectorAll('.modal-gallery figure');
+  // Suppression si besoins puis chargement des projets au demarage de la modale
+  const figures = modal.querySelectorAll('.modal-gallery figure');
   figures.forEach((figure) => {
     figure.remove();
   });
-  const modalGallery = document.querySelector('.modal-gallery');
+  const modalGallery = modal.querySelector('.modal-gallery');
   works.map((work) =>
     addElementToModal(modalGallery, work.id, work.imageUrl, work.title)
   );
@@ -83,13 +79,38 @@ const openModal = async function (e) {
   modal.removeAttribute('aria-hidden');
   modal.setAttribute('aria-modal', 'true');
   modal.addEventListener('click', closeModal);
-  const crossbutton = document.querySelector('.crossButton');
-  crossbutton.addEventListener('click', closeModal);
+  modal.querySelector('.crossButton').addEventListener('click', closeModal);
   modal
     .querySelector('.js-modal-stop')
     .addEventListener('click', stopPropagation);
+  // Rajout d'un EventListener sur chaque bouton poubelle
+  modal
+    .querySelectorAll('.trash')
+    .forEach((button) =>
+      button.addEventListener('click', addEventListnerToButtonTrash)
+    );
+
+  // modal
+  //   .querySelector('form .buttonAddWork')
+  //   .addEventListener('click', callApiDeleteWork);
 };
 
+// const callApiDeleteWork = async (e) => {
+//   e.preventDefault();
+//   debugger;
+//   if (confirm('Voulez vous supprimer ce projet ?')) {
+//     const res = await fetch('http://localhost:5678/api/works/11', {
+//       method: 'DELETE',
+//       headers: {
+//         ContentType: 'application/json',
+//         Authorization: 'Bearer ' + localStorage.getItem('token'),
+//       },
+//     });
+//     if (res.ok) {
+//       alert('Projet 11 supprimé');
+//     }
+//   }
+// };
 const closeModal = function (e) {
   if (modal === null) return;
   if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
@@ -108,6 +129,11 @@ const closeModal = function (e) {
     modal = null;
   };
   modal.addEventListener('animationend', hideModal);
+  modal
+    .querySelectorAll('.trash')
+    .forEach((button) =>
+      button.removeEventListener('click', addEventListnerToButtonTrash)
+    );
 };
 
 const stopPropagation = function (e) {
@@ -129,22 +155,6 @@ const focusInModal = function (e) {
     index = focusables.length - 1;
   }
   focusables[index].focus();
-};
-
-const loadModal = async function (url) {
-  const target = '#' + url.split('#')[1];
-  const exitingModal = document.querySelector(target);
-  if (exitingModal !== null) return exitingModal;
-  const html = await fetch(url).then((response) => response.text());
-  const element = document
-    .createRange()
-    .createContextualFragment(html)
-    .querySelector(target);
-  // console.log(element);
-  if (element === null)
-    throw `L'élément ${target} n'a pas été trouvé dans la page ${url}`;
-  document.body.append(element);
-  return element;
 };
 
 document.querySelectorAll('.js-modal').forEach((a) => {

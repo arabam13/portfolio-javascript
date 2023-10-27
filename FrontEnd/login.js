@@ -39,17 +39,9 @@ if (localStorage.getItem('token') && localStorage.getItem('token') !== '') {
           password: password.value,
         }),
       });
-      if (response.status === 404) {
-        error.textContent = 'Utilisateur non trouvé';
-        return;
-      }
 
-      if (response.status === 401) {
-        error.textContent = 'mot de passe incorrect';
-        return;
-      }
-      if (!response.ok) {
-        error.textContent = 'erreur serveur';
+      if (!response.ok || response.status === 401 || response.status === 404) {
+        error.textContent = 'Utilisateur ou mot de passe incorrect';
         return;
       }
 

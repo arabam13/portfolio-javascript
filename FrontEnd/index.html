@@ -16,7 +16,7 @@
   </head>
   <body>
     <section class="sectionEdition">
-      <a href="modalViewWorks.html#modal-viewWorks" class="js-modal">
+      <a href="#modal-viewWorks" class="js-modal">
         <div class="modeEdition">
           <span class="material-symbols-outlined">
             edit_square
@@ -64,7 +64,7 @@
       <section id="portfolio" id="gallery">
         <div class="gallery-header">
           <h2>Mes Projets</h2>
-          <a href="./modalViewWorks.html#modal-viewWorks" class="js-modal"><div class="modeEdition">
+          <a href="#modal-viewWorks" class="js-modal"><div class="modeEdition">
             <span class="material-symbols-outlined">
               edit_square
               </span>
@@ -72,7 +72,7 @@
           </div></a>
         </div>
         <div class="filterBar">
-          <button class="tous" data-id="tous">tous</button>
+          <button class="tous" data-id="all">tous</button>
           <button class="objets" data-id="1">objets</button>
           <button class="appartements" data-id="2">Appartements</button>
           <button class="hotels" data-id="3">Hotels & restaurants</li>
@@ -106,7 +106,26 @@
         </ul>
       </nav>
     </footer>
-    <aside></aside>
+    <aside
+      id="modal-viewWorks"
+      class="modal"
+      role="dialog"
+      aria-labelledby="titlemodal"
+      style="display: none;"
+    >
+      <div class="modal-wrapper js-modal-stop">
+        <div id="titlemodal" name="title">Galerie photo</div>
+        <span class="crossButton">X</span>
+        <div class="modal-gallery">
+          <!-- <figure>
+            <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" />
+            <button class="material-symbols-outlined trash">delete</button>
+          </figure> -->
+        </div>
+        <hr style="width: 100%" />
+        <button type="button" class="buttonAddWork">Ajouter une image</button>
+      </div>
+    </aside>
     <aside></aside>
     <script src="./app.js" defer></script>
     <script src="./modal-viewWorks.js" defer></script>
