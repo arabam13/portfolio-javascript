@@ -151,7 +151,7 @@ window.addEventListener('keydown', function (e) {
 //Ajout d'un EventListner sur le bouton d'ajout d'une photo
 document
   .querySelector('.modal-viewWorks .buttonAddWork')
-  .addEventListener('click', async (e) => {
+  ?.addEventListener('click', async (e) => {
     e.preventDefault();
     document.querySelector('.modal-viewWorks').style.display = 'none';
     document.querySelector('.modal-addWork').style.display = 'flex';
@@ -252,7 +252,7 @@ document
 //Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
 document
   .querySelector('.modal-addWork .arrowButton')
-  .addEventListener('click', (e) => {
+  ?.addEventListener('click', (e) => {
     e.preventDefault();
     document.querySelector('.modal-addWork').style.display = 'none';
     document.querySelector('.modal-viewWorks').style.display = 'flex';
