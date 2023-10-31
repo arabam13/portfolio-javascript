@@ -13,14 +13,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
+    <script src="https://kit.fontawesome.com/6f1b8d68c1.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <section class="sectionEdition">
       <a href="#modal-viewWorks" class="js-modal">
         <div class="modeEdition">
-          <span class="material-symbols-outlined">
-            edit_square
-          </span>
+          <i class="fa-regular fa-pen-to-square fa-lg"></i>
           <span class="modeEdition-text">Mode Edition</span>
         </div>
     </a>
@@ -65,9 +64,7 @@
         <div class="gallery-header">
           <h2>Mes Projets</h2>
           <a href="#modal-viewWorks" class="js-modal"><div class="modeEdition">
-            <span class="material-symbols-outlined">
-              edit_square
-              </span>
+            <i class="fa-regular fa-pen-to-square fa-lg"></i>
             <span class="modeEdition-text">Modifier</span>
           </div></a>
         </div>
@@ -114,19 +111,49 @@
       style="display: none;"
     >
       <div class="modal-wrapper js-modal-stop">
-        <div id="titlemodal" name="title">Galerie photo</div>
-        <span class="crossButton">X</span>
-        <div class="modal-gallery">
-          <!-- <figure>
-            <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" />
-            <button class="material-symbols-outlined trash">delete</button>
-          </figure> -->
-        </div>
-        <hr style="width: 100%" />
-        <button type="button" class="buttonAddWork">Ajouter une image</button>
+        <section class="modal-viewWorks">
+          <div id="titlemodal" name="title">Galerie photo</div>
+          <button type="button" class="crossButton"><i class="fa-solid fa-xmark fa-xl"></i></button>
+          <div class="modal-gallery">
+            <!-- <figure>
+              <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" />
+              <button class="trash"><i class="fa-solid fa-trash-can fa-lg"></i></button>
+            </figure> -->
+          </div>
+          <hr class="separator" />
+          <button type="button" class="buttonAddWork">Ajouter une image</button>
+        </section>
+        <section class="modal-addWork" style="display:none;">
+          <div id="titlemodal" name="title">Ajout d'une photo</div>
+          <button type="button" class="crossButton"><i class="fa-solid fa-xmark fa-xl"></i></button>
+          <button type="button" class="arrowButton"><i class="fa-solid fa-arrow-left fa-lg"></i></button>
+          
+          <form class="form-addWork" enctype="multipart/form-data" method="POST">
+            <div class="form-photo-div">
+              <i class="fa-regular fa-image fa-2xl image-form"></i>
+              <label for="image" class="label-image">+ Ajouter une photo</label>
+              <input type="file" name="image" id="image" style="display: none;">
+              <p class="image-text">jpg,png : 4mo max</p>
+            </div>
+            <div class="form-input">
+                <label for="title">Titre</label>
+                <input type="text" name="title" id="title">
+            </div>
+            <div class="form-input">
+                <label for="modal-category">Catégorie</label>
+                <select name="category" id="modal-category">
+                  <option value="" selected></option>
+                </select>
+            </div>
+            <!-- <input type="submit" value="Valider" id="modal-valider"> -->
+            <hr class="separator" />
+            <button type="button" class="buttonAddWork">Valider</button>
+          </form>
+
+        </section>
+        
       </div>
     </aside>
-    <aside></aside>
     <script src="./app.js" defer></script>
     <script src="./modal-viewWorks.js" defer></script>
   </body>
