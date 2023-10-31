@@ -148,6 +148,7 @@ window.addEventListener('keydown', function (e) {
   }
 });
 
+//Ajout d'un EventListner sur le bouton d'ajout d'une photo
 document
   .querySelector('.modal-viewWorks .buttonAddWork')
   .addEventListener('click', async (e) => {
@@ -169,8 +170,55 @@ document
           });
         });
     }
+    //Verifier les entrées du formulaire
+    const imageInput = document.getElementById('image');
+    const titleInput = document.getElementById('modal-photo-title');
+    const submitButton = document.querySelector('.form-addWork .buttonAddWork');
+
+    function checkForm() {
+      if (
+        titleInput.value !== '' &&
+        selectCategory.value !== '' &&
+        imageInput.value !== ''
+      ) {
+        submitButton.removeAttribute('disabled');
+        submitButton.style.backgroundColor = '#1D6154';
+        submitButton.style.cursor = 'pointer';
+      } else {
+        submitButton.style.backgroundColor = 'gray';
+        submitButton.style.cursor = 'not-allowed';
+        submitButton.setAttribute('disabled', 'true');
+      }
+    }
+
+    titleInput.addEventListener('input', checkForm);
+    selectCategory.addEventListener('change', checkForm);
+    imageInput.addEventListener('change', checkForm);
+
+    //Prévisualisation de l'image
+    const iconeImage = document.querySelector('.form-addWork .image-form');
+    const labelImage = document.querySelector('.form-addWork .image-label');
+    const pImage = document.querySelector('.form-addWork .image-text');
+
+    imageInput.addEventListener('change', function () {
+      const selectedImage = imageInput.files[0];
+
+      const imgPreview = document.createElement('img');
+      imgPreview.src = URL.createObjectURL(selectedImage);
+      imgPreview.style.height = '176px';
+      imgPreview.style.width = '131px';
+      imgPreview.style.objectFit = 'cover';
+
+      iconeImage.style.display = 'none';
+      labelImage.style.display = 'none';
+      pImage.style.display = 'none';
+      imageInput.style.display = 'none';
+      document.querySelector('.form-photo-div').appendChild(imgPreview);
+      document.querySelector('.form-photo-div').style.padding = '0 150px';
+    });
   });
 
+//Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
 document
   .querySelector('.modal-addWork .arrowButton')
   .addEventListener('click', (e) => {
