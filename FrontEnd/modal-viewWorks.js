@@ -199,14 +199,13 @@ document
     const iconeImage = document.querySelector('.form-addWork .image-form');
     const labelImage = document.querySelector('.form-addWork .image-label');
     const pImage = document.querySelector('.form-addWork .image-text');
-
     imageInput.addEventListener('change', function () {
       const selectedImage = imageInput.files[0];
 
       const imgPreview = document.createElement('img');
       imgPreview.src = URL.createObjectURL(selectedImage);
-      imgPreview.style.height = '176px';
-      imgPreview.style.width = '131px';
+      imgPreview.style.height = '192px';
+      imgPreview.style.width = '176px';
       imgPreview.style.objectFit = 'cover';
 
       iconeImage.style.display = 'none';
@@ -215,6 +214,39 @@ document
       imageInput.style.display = 'none';
       document.querySelector('.form-photo-div').appendChild(imgPreview);
       document.querySelector('.form-photo-div').style.padding = '0 150px';
+    });
+
+    //Ajout d'un nouveau projet
+    submitButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      //Verifier si la taille d'image ne dépasse pas 4mo
+      if (imageInput.files[0].size > 4 * 1024 * 1024) {
+        alert("La taille de l'image ne doit pas dépasser 4 Mo.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('title', titleInput.value);
+      formData.append('category', selectCategory.value);
+      formData.append('image', imageInput.files[0]);
+
+      fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((work) => {
+          //Ajout de la nouvelle photo dans la galerie
+          addElementToGallery(work.id, work.imageUrl, work.title);
+
+          alert('Le nouvel travail a été ajouté avec succès.');
+          window.location.reload();
+        })
+        .catch((error) => console.error(error));
     });
   });
 
