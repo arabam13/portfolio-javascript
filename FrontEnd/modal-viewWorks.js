@@ -23,7 +23,7 @@ const deleteFigureFromApi = async (e) => {
         }
         e.target.closest('figure').remove();
         document.querySelector(`.gallery figure[data-id="${id}"]`).remove();
-        document.querySelector('.modal-gallery figure[data-id="2"]').focus();
+        alert('Le travail a été supprimé avec succès.');
       })
       .catch((error) => console.error(error));
   }
@@ -244,7 +244,6 @@ document
           addElementToGallery(work.id, work.imageUrl, work.title);
 
           alert('Le nouvel travail a été ajouté avec succès.');
-          window.location.reload();
         })
         .catch((error) => console.error(error));
     });
