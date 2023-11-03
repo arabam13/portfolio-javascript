@@ -19,7 +19,7 @@ const deleteFigureFromApi = async (e) => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new error('La supression du travai à echoué.');
+          throw new error('La supression du travail à echoué.');
         }
         e.target.closest('figure').remove();
         document.querySelector(`.gallery figure[data-id="${id}"]`).remove();
@@ -89,6 +89,9 @@ const openModal = async function (e) {
   modal
     .querySelector('.js-modal-stop')
     .addEventListener('click', stopPropagation);
+  resetFormAddWork();
+  modal.querySelector('.modal-viewWorks').style.display = 'flex';
+  modal.querySelector('.modal-addWork').style.display = 'none';
 };
 
 const closeModal = function (e) {
@@ -156,6 +159,9 @@ document
     document.querySelector('.modal-viewWorks').style.display = 'none';
     document.querySelector('.modal-addWork').style.display = 'flex';
 
+    //reinitialisation du formulaire
+    resetFormAddWork();
+    //Alimentation de la liste déroulante des catégories
     const selectCategory = document.getElementById('modal-category');
     if (Array.from(selectCategory).length === 1) {
       await fetch('http://localhost:5678/api/categories')
@@ -173,7 +179,6 @@ document
     //Verifier les entrées du formulaire
     const imageInput = document.getElementById('image');
     const titleInput = document.getElementById('modal-photo-title');
-    const submitButton = document.querySelector('.form-addWork .buttonAddWork');
 
     function checkForm() {
       if (
@@ -199,8 +204,15 @@ document
     const iconeImage = document.querySelector('.form-addWork .image-form');
     const labelImage = document.querySelector('.form-addWork .image-label');
     const pImage = document.querySelector('.form-addWork .image-text');
-    imageInput.addEventListener('change', function () {
-      const selectedImage = imageInput.files[0];
+
+    //Ajout d'un EventListner sur l'entrée (input) de type file
+    imageInput.addEventListener('change', function (e) {
+      e.preventDefault();
+      const selectedImage = e.target.files[0];
+      const previewImage = document.querySelector('.form-photo-div img');
+      if (previewImage) {
+        previewImage.remove();
+      }
 
       const imgPreview = document.createElement('img');
       imgPreview.src = URL.createObjectURL(selectedImage);
@@ -211,49 +223,72 @@ document
       iconeImage.style.display = 'none';
       labelImage.style.display = 'none';
       pImage.style.display = 'none';
-      imageInput.style.display = 'none';
       document.querySelector('.form-photo-div').appendChild(imgPreview);
       document.querySelector('.form-photo-div').style.padding = '0 150px';
     });
+  });
 
-    //Ajout d'un nouveau projet
-    submitButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      //Verifier si la taille d'image ne dépasse pas 4mo
-      if (imageInput.files[0].size > 4 * 1024 * 1024) {
-        alert("La taille de l'image ne doit pas dépasser 4 Mo.");
-        return;
-      }
+//Ajout d'un nouveau projet
+const submitButton = document.querySelector('.form-addWork .buttonAddWork');
+submitButton?.addEventListener('click', async (e) => {
+  e.preventDefault();
+  //Verifier si la taille d'image ne dépasse pas 4mo
+  if (document.getElementById('image').files[0].size > 4 * 1024 * 1024) {
+    alert("La taille de l'image ne doit pas dépasser 4 Mo.");
+    return;
+  }
 
-      const formData = new FormData();
-      formData.append('title', titleInput.value);
-      formData.append('category', selectCategory.value);
-      formData.append('image', imageInput.files[0]);
+  const formData = new FormData();
+  formData.append('title', document.getElementById('modal-photo-title').value);
+  formData.append('category', document.getElementById('modal-category').value);
+  formData.append('image', document.getElementById('image').files[0]);
 
-      fetch('http://localhost:5678/api/works', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((work) => {
-          //Ajout de la nouvelle photo dans la galerie
-          addElementToGallery(work.id, work.imageUrl, work.title);
-
-          alert('Le nouvel travail a été ajouté avec succès.');
-        })
-        .catch((error) => console.error(error));
+  await fetch('http://localhost:5678/api/works', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((work) => {
+      addElementToGallery(work.id, work.imageUrl, work.title);
+      //reiitialisation du formulaire
+      resetFormAddWork();
+      //message d'alerte
+      alert('Le nouveau travail a été ajouté avec succès.');
+      //fermeture de la modale
+      modal.style.display = 'none';
     });
-  });
 
-//Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
-document
-  .querySelector('.modal-addWork .arrowButton')
-  ?.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.querySelector('.modal-addWork').style.display = 'none';
-    document.querySelector('.modal-viewWorks').style.display = 'flex';
-  });
+  //Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
+  document
+    .querySelector('.modal-addWork .arrowButton')
+    ?.addEventListener('click', (e) => {
+      e.preventDefault();
+      //reiitialisation du formulaire
+      resetFormAddWork();
+      //masquer la modale ajout d'image
+      document.querySelector('.modal-addWork').style.display = 'none';
+      document.querySelector('.modal-viewWorks').style.display = 'flex';
+    });
+});
+
+const resetFormAddWork = () => {
+  document.getElementById('modal-photo-title').value = '';
+  document.getElementById('modal-category').value = '';
+  document.getElementById('image').value = '';
+  document.querySelector('.image-form').style.display = 'block';
+  document.querySelector('.image-label').style.display = 'block';
+  document.querySelector('.image-text').style.display = 'block';
+  document.querySelector('.form-photo-div').style.padding = '30px 150px';
+  const submitButton = document.querySelector('.form-addWork .buttonAddWork');
+  submitButton.setAttribute('disabled', 'true');
+  submitButton.style.backgroundColor = 'gray';
+  submitButton.style.cursor = 'not-allowed';
+  const previewImage = document.querySelector('.form-photo-div img');
+  if (previewImage !== null) {
+    previewImage.remove();
+  }
+};
