@@ -261,19 +261,18 @@ submitButton?.addEventListener('click', async (e) => {
       //fermeture de la modale
       modal.style.display = 'none';
     });
-
-  //Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
-  document
-    .querySelector('.modal-addWork .arrowButton')
-    ?.addEventListener('click', (e) => {
-      e.preventDefault();
-      //reiitialisation du formulaire
-      resetFormAddWork();
-      //masquer la modale ajout d'image
-      document.querySelector('.modal-addWork').style.display = 'none';
-      document.querySelector('.modal-viewWorks').style.display = 'flex';
-    });
 });
+//Ajout d'un EventListner pour revenir en arrière lors de l'ajout d'une photo
+document
+  .querySelector('.modal-addWork .arrowButton')
+  ?.addEventListener('click', (e) => {
+    e.preventDefault();
+    //reiitialisation du formulaire
+    resetFormAddWork();
+    //masquer la modale ajout d'image
+    document.querySelector('.modal-addWork').style.display = 'none';
+    document.querySelector('.modal-viewWorks').style.display = 'flex';
+  });
 
 const resetFormAddWork = () => {
   document.getElementById('modal-photo-title').value = '';
